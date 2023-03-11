@@ -16,8 +16,8 @@ with tab1:
    url = "https://www.youtube.com/embed/xvEKQefqQ7A"
    st.video(url)
    st.text("What is the roadmap to becoming a Data Scientist?")
-   st.image("modern_ds.webp")
-   st.image('ds_roadmap.png')
+   st.image("images/modern_ds.webp")
+   st.image('images/ds_roadmap.png')
    st.markdown("""#### What is the difference between AI/ML/DS?
    Definitions: 
 
@@ -28,8 +28,8 @@ with tab1:
          -  Multi-layer NN, CNN, RNN
 
         """)
-   st.image('venn1.jpg')
-   st.image('diagram_2.png')
+   st.image('images/venn1.jpg')
+   st.image('images/diagram_2.png')
    st.markdown("""#### What does a Data Scientist do?
     Drawing useful conclusions from data using computation 
 
@@ -53,8 +53,8 @@ with tab1:
 
         - Data Storytelling 
             -  Share results/findings from model/analyses with stakeholders/other teams""")
-   st.image('ds_process_2.jpeg')
-   st.image('data-prep-approach-time.png')
+   st.image('images/ds_process_2.jpeg')
+   st.image('images/data-prep-approach-time.png')
    
 
 with tab2:
@@ -64,12 +64,12 @@ with tab2:
     st.caption("For different types of jobs in Data Science, here are some skill focus separations. \
         Keep in mind that every company is different and can align their DS roles slightly differently. \
             This is meant as a guide, not a steadfast rule.")
-    st.image("ds_skills_comparison.webp")
+    st.image("images/ds_skills_comparison.webp")
     st.caption("Within a role, there are ways you can distinguish yourself. Are you interested in focusing in one area\
         and becoming a subject matter expert? Are you very curious and want to explore lots of different areas and want \
             to become more of a generalist? While all of these are good options, it is helpful in interviews to know \
                 yourself, so you can market your strengths")
-    st.image("types_of_ds.jpg")
+    st.image("images/types_of_ds.jpg")
 
 with tab3:
     st.header("Common Requirements")
