@@ -1,5 +1,10 @@
 import pandas as pd
 import streamlit as st
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+import string
+
+import ds_ref_data as data
 
 st.title("Data Science Resources")
 st.sidebar.subheader("Quick Links:")
@@ -10,9 +15,9 @@ with links:
     st.sidebar.write("Link to Job Comparison: [Different DS Job Types](https://builtin.com/data-science/data-science-jobs)")
     
     
-tab1, tab2, tab3 = st.tabs(["Overview", "Job Types", "Common Reqs"])
+tab1, tab2, tab3 = st.tabs(["Overview", "Job Types", "Job Req Analysis"])
 with tab1:
-   st.header("Quick Overview of Data Science:")
+   st.subheader("Quick Overview of Data Science:")
    url = "https://www.youtube.com/embed/xvEKQefqQ7A"
    st.video(url)
    st.text("What is the roadmap to becoming a Data Scientist?")
@@ -58,7 +63,7 @@ with tab1:
    
 
 with tab2:
-    st.header("Differences in DS Jobs")
+    st.subheader("Differences in DS Jobs")
     url2='https://youtu.be/VrdnBxx8BBI'
     st.video(url2)
     st.caption("For different types of jobs in Data Science, here are some skill focus separations. \
@@ -72,7 +77,65 @@ with tab2:
     st.image("images/types_of_ds.jpg")
 
 with tab3:
-    st.header("Common Requirements")
- 
+    st.subheader("Job Req Analysis")
+    st.caption("The data used for this study is obtained by aggregated data from [ai-jobs.net](https://ai-jobs.net), under this [license](https://creativecommons.org/publicdomain/zero/1.0/).")
 
-## bring in live pay, state, and title graphs
+    ## WordCloud
+    data_df = data.gather_salary_data()
+    text =str(data_df["job_title"].values)
+    clean_text = text.translate(str.maketrans('','',string.punctuation))
+
+    wordcloud = WordCloud(width=480, height=480, margin=0).generate(clean_text)
+
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis('off')
+    plt.margins(x=0,y=0)
+
+    st.caption("Word Frequencies of Job Titles in 2020-2022")
+    st.pyplot(fig=plt, clear_figure=True)
+
+    highest_2022 = (data_df[data_df.work_year == 2022].groupby(["job_title", "experience_level", "company_size", "company_location"]).max()['salary_in_usd'].reset_index()
+                                        ).sort_values(["salary_in_usd"], ascending=False).head(10)
+
+    st.caption("Top 2022 Job Titles by Salaries")
+    fig = plt.barh(highest_2022['job_title'], 
+            highest_2022["salary_in_usd"]
+            )
+    plt.xlabel("Salaries")
+    st.pyplot(fig=plt, clear_figure=True)
+
+    average_earn = data_df.groupby(["job_title"]).mean()["salary_in_usd"].reset_index().sort_values(["salary_in_usd"], ascending=False).head(10)
+    average_earn["salary_in_usd"]  = average_earn["salary_in_usd"].round(decimals=2)
+
+    st.caption("Average Earnings by Job Title")
+    fig = plt.barh(average_earn['job_title'], 
+            average_earn["salary_in_usd"]
+            )
+    plt.xlabel('Salaries')
+    st.pyplot(fig=plt, clear_figure=True)
+
+    xp_level = (data_df.groupby("experience_level").mean()["salary_in_usd"].reset_index()
+                .sort_values("salary_in_usd", ascending=False)
+            .round(decimals=2))
+
+    st.caption("Average Earnings by Experience Level")
+
+    fig = plt.barh(xp_level['experience_level'], 
+        xp_level["salary_in_usd"]
+        )
+    plt.xlabel('Salaries')
+    st.pyplot(fig=plt, clear_figure=True)
+
+    org_size = (data_df.groupby("company_size")
+                        .mean()['salary_in_usd']
+                            .reset_index()
+                        .sort_values("salary_in_usd", ascending=False)
+                    .round(decimals=2))
+    st.caption("Average Earnings by Company Size")
+
+    fig = plt.barh(org_size['company_size'], 
+        org_size["salary_in_usd"]
+        )
+    plt.xlabel('Salaries')
+    st.pyplot(fig=plt, clear_figure=True)
+## future idea: bring in live pay, state, and title graphs

@@ -1,2 +1,6 @@
 streamlit
 pandas
+wordcloud
+plotly==5.3.1
+string
+matplotlib
